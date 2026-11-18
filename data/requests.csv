@@ -1,0 +1,4 @@
+request_id,person,service_code,state
+R1,P1,A,cancelled
+R2,P1,B,requested
+R3,P2,B,requested

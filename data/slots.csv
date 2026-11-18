@@ -1,0 +1,5 @@
+slot_id,package_id,service_code,units,relative_price,exclusive_group
+S1,PK1,A,2,300,G1
+S2,PK1,B,1,400,
+S3,PK2,A,1,300,G1
+S4,PK3,B,2,250,

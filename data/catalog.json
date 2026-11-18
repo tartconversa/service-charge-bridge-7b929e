@@ -1,0 +1,385 @@
+{
+  "title": "医疗服务执行与收费包关联仓",
+  "synthetic": true,
+  "tables": [
+    {
+      "name": "packages",
+      "description": "销售包。",
+      "columns": [
+        {
+          "name": "package_id",
+          "type": "string",
+          "description": "包",
+          "nullable": true
+        },
+        {
+          "name": "person",
+          "type": "string",
+          "description": "人",
+          "nullable": true
+        },
+        {
+          "name": "sold_at",
+          "type": "datetime",
+          "description": "销售",
+          "nullable": true
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "description": "合同价",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "package_id"
+      ],
+      "references": [],
+      "path": "data/packages.csv",
+      "row_count": 3,
+      "sha256": "a28c51384b7a149a042ed81d367c59893d5350eb0a04c32afc19de85e3b7a786"
+    },
+    {
+      "name": "slots",
+      "description": "销售时承诺及权重。",
+      "columns": [
+        {
+          "name": "slot_id",
+          "type": "string",
+          "description": "权益",
+          "nullable": true
+        },
+        {
+          "name": "package_id",
+          "type": "string",
+          "description": "包",
+          "nullable": true
+        },
+        {
+          "name": "service_code",
+          "type": "string",
+          "description": "类",
+          "nullable": true
+        },
+        {
+          "name": "units",
+          "type": "number",
+          "description": "总单位",
+          "nullable": true
+        },
+        {
+          "name": "relative_price",
+          "type": "number",
+          "description": "相对价",
+          "nullable": true
+        },
+        {
+          "name": "exclusive_group",
+          "type": "string",
+          "description": "互斥组",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "slot_id"
+      ],
+      "references": [
+        {
+          "column": "package_id",
+          "target_table": "packages",
+          "target_column": "package_id"
+        }
+      ],
+      "path": "data/slots.csv",
+      "row_count": 4,
+      "sha256": "5cac768e3b248975a2900b4471da29c11f39413e1cf1cb9676478eee6af5fe64"
+    },
+    {
+      "name": "requests",
+      "description": "服务申请非执行。",
+      "columns": [
+        {
+          "name": "request_id",
+          "type": "string",
+          "description": "申请",
+          "nullable": true
+        },
+        {
+          "name": "person",
+          "type": "string",
+          "description": "人",
+          "nullable": true
+        },
+        {
+          "name": "service_code",
+          "type": "string",
+          "description": "类",
+          "nullable": true
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "description": "requested或cancelled",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "request_id"
+      ],
+      "references": [],
+      "path": "data/requests.csv",
+      "row_count": 3,
+      "sha256": "e647f5836a07be42dd0f3b7466d9ba0cbd047b98f54f9c67d8dc3b3ab916b755"
+    },
+    {
+      "name": "executions",
+      "description": "实际服务证据。",
+      "columns": [
+        {
+          "name": "execution_id",
+          "type": "string",
+          "description": "执行",
+          "nullable": true
+        },
+        {
+          "name": "request_id",
+          "type": "string",
+          "description": "申请",
+          "nullable": true
+        },
+        {
+          "name": "person",
+          "type": "string",
+          "description": "人",
+          "nullable": true
+        },
+        {
+          "name": "service_code",
+          "type": "string",
+          "description": "类",
+          "nullable": true
+        },
+        {
+          "name": "team",
+          "type": "string",
+          "description": "团队",
+          "nullable": true
+        },
+        {
+          "name": "units",
+          "type": "number",
+          "description": "单位",
+          "nullable": true
+        },
+        {
+          "name": "at",
+          "type": "datetime",
+          "description": "实际",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "description": "confirmed或pending",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "execution_id"
+      ],
+      "references": [
+        {
+          "column": "request_id",
+          "target_table": "requests",
+          "target_column": "request_id"
+        }
+      ],
+      "path": "data/executions.csv",
+      "row_count": 3,
+      "sha256": "6fabdc78d22c4472c308e6bc60d3cd024c7b908f4c1199009491a1ed0792e27e"
+    },
+    {
+      "name": "fulfillment_links",
+      "description": "来源声称的兑现，冲突须待核。",
+      "columns": [
+        {
+          "name": "link_id",
+          "type": "string",
+          "description": "引用",
+          "nullable": true
+        },
+        {
+          "name": "execution_id",
+          "type": "string",
+          "description": "执行",
+          "nullable": true
+        },
+        {
+          "name": "slot_id",
+          "type": "string",
+          "description": "权益",
+          "nullable": true
+        },
+        {
+          "name": "units",
+          "type": "number",
+          "description": "单位",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "link_id"
+      ],
+      "references": [
+        {
+          "column": "execution_id",
+          "target_table": "executions",
+          "target_column": "execution_id"
+        },
+        {
+          "column": "slot_id",
+          "target_table": "slots",
+          "target_column": "slot_id"
+        }
+      ],
+      "path": "data/fulfillment_links.csv",
+      "row_count": 4,
+      "sha256": "0097adcb00e25051d8bed153c8009e897aab3fe50baa1532f1fd5a864241a926"
+    },
+    {
+      "name": "substitutions",
+      "description": "合同允许替代，不表示自动兑现。",
+      "columns": [
+        {
+          "name": "rule_id",
+          "type": "string",
+          "description": "规则",
+          "nullable": true
+        },
+        {
+          "name": "slot_service",
+          "type": "string",
+          "description": "原类",
+          "nullable": true
+        },
+        {
+          "name": "actual_service",
+          "type": "string",
+          "description": "实际类",
+          "nullable": true
+        },
+        {
+          "name": "unit_ratio",
+          "type": "number",
+          "description": "原权益每实际单位",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "rule_id"
+      ],
+      "references": [],
+      "path": "data/substitutions.csv",
+      "row_count": 1,
+      "sha256": "7cc6dc4d2aeee511f831b2648ddecfed3c914e4ed6bfed88735e70dc9958e6f6"
+    },
+    {
+      "name": "refunds",
+      "description": "后续可单独接收的权益撤回。",
+      "columns": [
+        {
+          "name": "refund_id",
+          "type": "string",
+          "description": "退",
+          "nullable": true
+        },
+        {
+          "name": "slot_id",
+          "type": "string",
+          "description": "权益",
+          "nullable": true
+        },
+        {
+          "name": "units",
+          "type": "number",
+          "description": "撤回单位",
+          "nullable": true
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "description": "实退元",
+          "nullable": true
+        },
+        {
+          "name": "at",
+          "type": "datetime",
+          "description": "时点",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "refund_id"
+      ],
+      "references": [
+        {
+          "column": "slot_id",
+          "target_table": "slots",
+          "target_column": "slot_id"
+        }
+      ],
+      "path": "data/refunds.csv",
+      "row_count": 2,
+      "sha256": "aa244d0e08277e9b1f79e6ac01d623facf16f8e102b6e2c52a0d75590dcd2c07"
+    },
+    {
+      "name": "cash",
+      "description": "不因收入归属重新生成。",
+      "columns": [
+        {
+          "name": "cash_id",
+          "type": "string",
+          "description": "流水",
+          "nullable": true
+        },
+        {
+          "name": "package_id",
+          "type": "string",
+          "description": "包",
+          "nullable": true
+        },
+        {
+          "name": "kind",
+          "type": "string",
+          "description": "receive或refund",
+          "nullable": true
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "description": "正金额",
+          "nullable": true
+        },
+        {
+          "name": "at",
+          "type": "datetime",
+          "description": "时点",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "cash_id"
+      ],
+      "references": [
+        {
+          "column": "package_id",
+          "target_table": "packages",
+          "target_column": "package_id"
+        }
+      ],
+      "path": "data/cash.csv",
+      "row_count": 5,
+      "sha256": "6fed0130797a160188596e5ea34d4d0931667e36d146048d725c60dece918c2c"
+    }
+  ]
+}
